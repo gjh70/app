@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
-const LoginScreen = () => {
+const LoginScreen = ({ navigation }) => {  // Accept navigation prop
   const [selectedRole, setSelectedRole] = useState(null);
 
   return (
@@ -24,12 +24,16 @@ const LoginScreen = () => {
       </View>
 
       <View style={styles.buttonContainer}>
+        {/* Farmer Login Button - Navigates to LoginScreen2 */}
         <TouchableOpacity
           style={[
             styles.button,
             selectedRole === 'farmer' ? styles.selectedButton : null,
           ]}
-          onPress={() => setSelectedRole('farmer')}
+          onPress={() => {
+            setSelectedRole('farmer');
+            navigation.navigate('FarmerHome');  // Navigate to LoginScreen2
+          }}
         >
           <Text
             style={[
@@ -41,6 +45,7 @@ const LoginScreen = () => {
           </Text>
         </TouchableOpacity>
 
+        {/* Industry Login Button (No Change) */}
         <TouchableOpacity
           style={[
             styles.button,
