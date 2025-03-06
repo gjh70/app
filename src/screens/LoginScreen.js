@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
-const LoginScreen = ({ navigation }) => {  // Accept navigation prop
+const LoginScreen = ({ navigation }) => {  
   const [selectedRole, setSelectedRole] = useState(null);
 
   return (
@@ -24,39 +24,42 @@ const LoginScreen = ({ navigation }) => {  // Accept navigation prop
       </View>
 
       <View style={styles.buttonContainer}>
-        {/* Farmer Login Button - Navigates to LoginScreen2 */}
+        {/* Farmer Login Button */}
         <TouchableOpacity
           style={[
             styles.button,
-            selectedRole === 'farmer' ? styles.selectedButton : null,
+            selectedRole === 'farmer' ? styles.selectedButton : styles.defaultButton,
           ]}
           onPress={() => {
             setSelectedRole('farmer');
-            navigation.navigate('FarmerHome');  // Navigate to LoginScreen2
+            navigation.navigate('FarmerHome');  
           }}
         >
           <Text
             style={[
               styles.buttonText,
-              selectedRole === 'farmer' ? styles.selectedText : null,
+              selectedRole === 'farmer' ? styles.selectedText : styles.defaultText,
             ]}
           >
             Farmer Login
           </Text>
         </TouchableOpacity>
 
-        {/* Industry Login Button (No Change) */}
+        {/* Industry Login Button */}
         <TouchableOpacity
           style={[
             styles.button,
-            selectedRole === 'industry' ? styles.selectedButton : null,
+            selectedRole === 'industry' ? styles.selectedButton : styles.defaultButton,
           ]}
-          onPress={() => setSelectedRole('industry')}
+          onPress={() => {
+            setSelectedRole('industry');
+            navigation.navigate('IndustryHome');  
+          }}
         >
           <Text
             style={[
               styles.buttonText,
-              selectedRole === 'industry' ? styles.selectedText : null,
+              selectedRole === 'industry' ? styles.selectedText : styles.defaultText,
             ]}
           >
             Industry Login
@@ -84,13 +87,20 @@ const styles = StyleSheet.create({
     padding: 12,
     borderRadius: 8,
     marginBottom: 10,
-    borderColor: 'white',
-    borderWidth: 1,
     alignItems: 'center',
     width: 200,
   },
-  buttonText: { color: 'white', fontSize: 16, fontWeight: 'bold' },
-  selectedButton: { backgroundColor: '#2E7D32', borderWidth: 0 },
+  defaultButton: {
+    borderColor: 'white',
+    borderWidth: 1,
+    backgroundColor: 'transparent',
+  },
+  selectedButton: {
+    backgroundColor: '#2E7D32',
+    borderWidth: 0,
+  },
+  buttonText: { fontSize: 16, fontWeight: 'bold' },
+  defaultText: { color: 'white' },
   selectedText: { color: 'white' },
 });
 
