@@ -59,9 +59,9 @@ const IndustryTrans = () => {
       <View style={styles.bottomNav}>
         {[
           { name: 'Home', icon: 'home', screen: 'IndustryHome' },
-          { name: 'Help', icon: 'help-outline' },
+          { name: 'Help', icon: 'help-outline',screen:'IndustryHelp' },
           { name: 'Transaction', icon: 'account-balance-wallet'},
-          { name: 'Profile', icon: 'person-outline' }
+          { name: 'Profile', icon: 'person-outline',screen:'IndustryProfile'}
         ].map((tab) => (
           <TouchableOpacity
             key={tab.name}
@@ -69,7 +69,8 @@ const IndustryTrans = () => {
             onPress={() => {
               setActiveTab(tab.name);
               if (tab.screen) {
-                navigation.navigate('IndustryTabs', { screen: tab.screen });
+                navigation.navigate('IndustryHome');
+
               }
             }}
           >
