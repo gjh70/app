@@ -24,6 +24,24 @@ const IndustryHome = ({ navigation }) => {
     { id: '3', name: 'Robert Brown', creditScore: 8, rawMaterials: ['Rice', 'Oats'] }
   ];
 
+  // Categories of raw materials
+  const filterCategories = ['Grains', 'Vegetables', 'Fruits'];
+
+  // Map categories to raw materials
+  const categoryMapping = {
+    Grains: ['Corn', 'Wheat', 'Rice', 'Barley', 'Oats'],
+    Vegetables: ['Tomatoes', 'Carrots', 'Peppers'],
+    Fruits: ['Apples', 'Bananas', 'Grapes']
+  };
+
+  // Filter farmers based on selected filters
+  const filteredFarmers = farmers.filter((farmer) => {
+    if (selectedFilters.length === 0) return true; // No filters, show all
+    return farmer.rawMaterials.some((material) =>
+      selectedFilters.some((filter) => categoryMapping[filter]?.includes(material))
+    );
+  });
+
   return (
     <View style={styles.container}>
       {/* Header Section */}
@@ -50,7 +68,7 @@ const IndustryHome = ({ navigation }) => {
 
       {/* Farmers List */}
       <FlatList
-        data={farmers}
+        data={filteredFarmers}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <View style={styles.card}>
@@ -68,9 +86,9 @@ const IndustryHome = ({ navigation }) => {
       <View style={styles.bottomNav}>
         {[
           { name: 'Home', icon: 'home', screen: 'IndustryHome' },
-          { name: 'Help', icon: 'help-outline', screen: 'IndustryHome' },
+          { name: 'Help', icon: 'help-outline', screen: 'IndustryHelp' },
           { name: 'Transaction', icon: 'account-balance-wallet', screen: 'IndustryTrans' },
-          { name: 'Profile', icon: 'person-outline', screen: 'IndustryHome' }
+          { name: 'Profile', icon: 'person-outline', screen: 'IndustryProfile' }
         ].map((tab) => (
           <TouchableOpacity
             key={tab.name}
@@ -104,6 +122,30 @@ const IndustryHome = ({ navigation }) => {
               </Text>
             </TouchableOpacity>
 
+            {/* Filter Section */}
+            <Text style={styles.modalTitle}>Filter By</Text>
+            {filterCategories.map((category) => (
+              <TouchableOpacity
+                key={category}
+                onPress={() => {
+                  setSelectedFilters((prev) =>
+                    prev.includes(category)
+                      ? prev.filter((f) => f !== category)
+                      : [...prev, category]
+                  );
+                }}
+              >
+                <Text
+                  style={[
+                    styles.optionText,
+                    selectedFilters.includes(category) && styles.selectedText
+                  ]}
+                >
+                  {category}
+                </Text>
+              </TouchableOpacity>
+            ))}
+
             <TouchableOpacity style={styles.closeButton} onPress={() => setModalVisible(false)}>
               <Text style={styles.closeText}>Close</Text>
             </TouchableOpacity>
@@ -116,7 +158,7 @@ const IndustryHome = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#FFFFFF', paddingHorizontal: 16 },
-  
+
   // Header Styles
   header: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingVertical: 10 },
   title: { fontSize: 18, fontWeight: 'bold', textAlign: 'center', flex: 1 },
@@ -143,10 +185,8 @@ const styles = StyleSheet.create({
   modalContainer: { flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0,0,0,0.5)' },
   modalContent: { width: 300, padding: 20, backgroundColor: 'white', borderRadius: 10, alignItems: 'center' },
   modalTitle: { fontSize: 16, fontWeight: 'bold', marginTop: 10 },
-  
   optionText: { fontSize: 14, marginVertical: 5 },
   selectedText: { color: 'green', fontWeight: 'bold' },
-
   closeButton: { marginTop: 15, padding: 10, backgroundColor: 'green', borderRadius: 5 },
   closeText: { color: 'white', fontWeight: 'bold' },
 });
